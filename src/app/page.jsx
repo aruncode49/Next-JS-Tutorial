@@ -9,15 +9,19 @@ export default function Home() {
   const [users, setUsers] = useState([]);
 
   async function getAllUsers() {
-    const res = await fetch("https://jsonplaceholder.org/users");
-    if (!res.ok) throw new Error("something went wrong");
+    try {
+      const res = await fetch("https://jsonplaceholder.org/users");
+      if (!res.ok) throw new Error("something went wrong");
 
-    const data = await res.json();
-    setUsers(data);
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   useEffect(() => {
-    getAllUsers();
+    // getAllUsers();
   }, []);
 
   return (
