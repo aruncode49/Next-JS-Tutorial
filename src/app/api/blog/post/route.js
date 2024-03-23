@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
+import Post from "@/models/post.model.js";
 
 // third party api call
 // export async function GET(req) {
@@ -18,9 +19,39 @@ await connectDB();
 
 export async function GET(req) {
   try {
-    return NextResponse.json({
-      msg: "Success",
-    });
+    const document = await Post.find();
+    if (document)
+      return NextResponse.json({
+        msg: "Success",
+        data: document,
+      });
+  } catch (error) {
+    console.log(error.message);
+    return NextResponse.json(
+      {
+        msg: "Something went wrong!",
+      },
+      { status: 400 }
+    );
+  }
+}
+
+export async function POST(req) {
+  try {
+    const data = {
+      title: "Test title",
+      body: "this is the demo body",
+    };
+
+    const document = await Post.create(data);
+    if (document)
+      return NextResponse.json(
+        {
+          msg: "Document Created",
+          data: document,
+        },
+        { status: 201 }
+      );
   } catch (error) {
     console.log(error.message);
     return NextResponse.json(
