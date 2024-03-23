@@ -6,22 +6,22 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
 
-  async function getAllUsers() {
+  async function getAllPosts() {
     try {
-      const res = await fetch("https://jsonplaceholder.org/users");
+      const res = await fetch("/api/blog/post");
       if (!res.ok) throw new Error("something went wrong");
 
       const data = await res.json();
-      setUsers(data);
+      if (data) setPosts(data);
     } catch (error) {
       console.log(error.message);
     }
   }
 
   useEffect(() => {
-    // getAllUsers();
+    // getAllPosts();
   }, []);
 
   return (
@@ -37,10 +37,10 @@ export default function Home() {
       </button>
 
       {/* data fetching */}
-      {/* get users */}
+      {/* get all posts using our custom api */}
 
-      {users.length > 0 ? (
-        users.map((user) => <p key={user.id}>{user.firstname}</p>)
+      {posts.length > 0 ? (
+        posts.map((post) => <p key={post.id}>{post.title}</p>)
       ) : (
         <h1>Loading...</h1>
       )}
